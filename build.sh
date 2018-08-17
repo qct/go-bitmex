@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 PROJECT_HOME=$(cd $(dirname "$0") && pwd)
 GO_SWAGGER_URL="https://github.com/go-swagger/go-swagger/releases/download"
@@ -12,19 +12,19 @@ get_latest_release() {
 }
 
 ### Download go-swagger
-if [[ ! -f $PROJECT_HOME/go-swagger ]]; then
-  LATAEST_TAG=`get_latest_release "go-swagger/go-swagger"`
-  GO_SWAGGER_DOWNLOAD_URL="$GO_SWAGGER_URL/$LATAEST_TAG/swagger_${OS}_$ARCH"
-  echo "Downlaoding go-swagger binary into $PROJECT_HOME"
-  wget $GO_SWAGGER_DOWNLOAD_URL -O $PROJECT_HOME/go-swagger
+if [[ ! -f ${PROJECT_HOME}/go-swagger ]]; then
+  LATEST_TAG=`get_latest_release "go-swagger/go-swagger"`
+  GO_SWAGGER_DOWNLOAD_URL="$GO_SWAGGER_URL/$LATEST_TAG/swagger_${OS}_$ARCH"
+  echo "Downloading go-swagger binary into $PROJECT_HOME"
+  wget ${GO_SWAGGER_DOWNLOAD_URL} -O ${PROJECT_HOME}/go-swagger
 fi
-chmod +x $PROJECT_HOME/go-swagger
+chmod +x ${PROJECT_HOME}/go-swagger
 
 ### Download swagger.json
 RESOURCES="https://www.bitmex.com/api/explorer/swagger.json"
-wget $RESOURCES -O $PROJECT_HOME/swagger.json
-cat $PROJECT_HOME/swagger.json|jq . > $PROJECT_HOME/swagger.json
-sed -i 's/.*"default": {},/"default": null,/' $PROJECT_HOME/swagger.json
+wget ${RESOURCES} -O ${PROJECT_HOME}/swagger.json
+cat ${PROJECT_HOME}/swagger.json|jq . > ${PROJECT_HOME}/swagger.json
+sed -i 's/.*"default": {},/"default": null,/' ${PROJECT_HOME}/swagger.json
 
 ### Validate & format swagger.json
 # echo "Validating swagger.json ..."
@@ -33,4 +33,4 @@ sed -i 's/.*"default": {},/"default": null,/' $PROJECT_HOME/swagger.json
 # echo "Validated successfully"
 
 ### Generate go client
-$PROJECT_HOME/go-swagger generate client -f $PROJECT_HOME/swagger.json -A go-bitmex
+${PROJECT_HOME}/go-swagger generate client -f ${PROJECT_HOME}/swagger.json -A go-bitmex
