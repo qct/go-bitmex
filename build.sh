@@ -27,10 +27,10 @@ cat $PROJECT_HOME/swagger.json|jq . > $PROJECT_HOME/swagger.json
 sed -i 's/.*"default": {},/"default": null,/' $PROJECT_HOME/swagger.json
 
 ### Validate & format swagger.json
-echo "Validating swagger.json ..."
-$PROJECT_HOME/go-swagger validate $PROJECT_HOME/swagger.json
-if [[ $? -ne 0 ]]; then echo "Failed validating swagger.json"; exit 1; fi;
-echo "Validated successfully"
+# echo "Validating swagger.json ..."
+# $PROJECT_HOME/go-swagger validate $PROJECT_HOME/swagger.json
+# if [[ $? -ne 0 ]]; then echo "Failed validating swagger.json"; exit 1; fi;
+# echo "Validated successfully"
 
 ### Generate go client
 $PROJECT_HOME/go-swagger generate client -f $PROJECT_HOME/swagger.json -A go-bitmex
