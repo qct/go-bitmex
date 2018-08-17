@@ -21,9 +21,9 @@ fi
 chmod +x ${PROJECT_HOME}/go-swagger
 
 ### Download swagger.json
+echo "Downloading swagger.json ..."
 RESOURCES="https://www.bitmex.com/api/explorer/swagger.json"
-wget ${RESOURCES} -O ${PROJECT_HOME}/swagger.json
-cat ${PROJECT_HOME}/swagger.json|jq . > ${PROJECT_HOME}/swagger.json
+curl -fL --silent --retry 3 --keepalive-time 2 ${RESOURCES} |jq . > ${PROJECT_HOME}/swagger.json
 sed -i 's/.*"default": {},/"default": null,/' ${PROJECT_HOME}/swagger.json
 
 ### Validate & format swagger.json
